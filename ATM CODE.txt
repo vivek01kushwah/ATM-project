@@ -1,0 +1,523 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<stdlib.h>
+void staticmembers(); //details of five members
+void userlogin();
+void withdrawmoney();   //function to withdraw money
+void depositmoney();    //function to deposit money in user account
+void checkbalance();    //function to check available balance
+void admin();           // admin login
+void adminaccess();     //list of users
+void adminnewregister();  //for new entry
+void usersearch();         // to search user
+void pinchange();          //to change pin
+void recipt(int temp);     //to print recipt
+void tamount(int k);       //to transfer money
+int choice,acntno,pass,n=5,totalwith=0,totaldep=0,temp;
+long long int totalamt=324400;    // total amount present in ATM
+struct ATM
+{
+  int accno;
+  int pin;
+  char name[20];
+  char surname[20];
+  int amt;
+
+}ob[20];
+
+
+int main()
+{ int userch=1;
+  system("color 1F");
+  staticmembers();
+  while(userch==1)
+  {
+  printf("\t\t\t\t\t****WELCOME TO THE BANK OF INDIA ATM****\n");       //calling staticmembers() for defining 5 member details
+  printf("\n\n%s",__TIME__);
+  printf("\n\n%s",__DATE__);
+
+  printf("\n\n\n\t\t\tHOW CAN WE HELP YOU. PLEASE SELECT THE OPTION YOU WANT TO GO WITH:\n\n");
+  printf("\n\n\n\t\t\t\t1. ADMIN LOGIN\t\t2. USER LOGIN\n\n\n\n\t\t\t\tENTER HERE : ");
+  scanf("%d",&choice);
+  getch();
+  system("cls");
+  switch(choice)
+  { case 1: admin();
+            break;
+    case 2: userlogin();
+            break;
+    default: printf("\n\n\t\tPLEASE ENTER A VALID CHOICE \n");
+  }
+getch();
+system("cls");
+printf("\n\n\t\tDO YOU WANT TO REVISIT THE STARTING MENU\n\n\t\t1.YES\n\n\t\t2.NO\n\n\t\tENTER HERE : ");
+scanf("%d",&userch);
+if(userch==1)
+{
+
+    getch();
+    system("cls");
+
+  }
+  }
+  if(userch==2)
+  {   int rech;
+      printf("\n\n\t\tDO YOU WANT TO PRINT RECIPT\n\n\t\t1. YES\n\n\t\t2. NO\n\n\t\tENTER HERE : ");
+      scanf("%d",&rech);
+      if(rech==1)
+      recipt(temp);
+      else
+      exit(0);
+  }
+	getch();
+	return 0;
+}
+
+void staticmembers()
+{
+  ob[0].accno=99011;
+  ob[0].pin=1256;
+  strcpy(ob[0].name,"Abhishek");
+  strcpy(ob[0].surname,"Raj");
+  ob[0].amt=66000;
+
+  ob[1].accno=99012;
+  ob[1].pin=1134;
+  strcpy(ob[1].name,"Prathvi");
+  strcpy(ob[1].surname,"Soni");
+  ob[1].amt=78000;
+
+  ob[2].accno=99013;
+  ob[2].pin=7896;
+  strcpy(ob[2].name,"Rishika");
+  strcpy(ob[2].surname,"Bhataniya");
+  ob[2].amt=75000;
+
+  ob[3].accno=99014;
+  ob[3].pin=5643;
+  strcpy(ob[3].name,"Shivam");
+  strcpy(ob[3].surname,"Kushwah");
+  ob[3].amt=56400;
+
+  ob[4].accno=99015;
+  ob[4].pin=7235;
+  strcpy(ob[4].name,"Muskan");
+  strcpy(ob[4].surname,"Rahine");
+  ob[4].amt=49000;
+}
+
+void withdrawmoney(int k)                          //to withdraw money from user account
+{  int amountwith,chk=0;
+  getch();
+  system("cls");
+  printf("\n\n\t\t%s ENTER THE AMOUNT YOU WISH TO WITHDRAW.",ob[k].name);
+  label:
+  printf("\n\n\t\tPLEASE NOTE THAT AMOUNT YOU ENTER SHOULD BE A MULTIPLE OF 100 ONLY!!\n\n\t\tENTER HERE : ");
+  scanf("%d",&amountwith);
+  if(amountwith%100==0)
+  {
+  if(amountwith<=ob[k].amt)
+  {
+      printf("\n\n\t\tPLEASE COLLECT YOUR CASH AMOUNT OF RS %d.\n",amountwith);getch();
+       ob[k].amt-=amountwith;
+       totalwith+=amountwith;
+       printf("\n\n\t\tREMAINING BALANCE IS RS %d.",ob[k].amt);
+     }
+     else
+        printf("\n\n\t\tTHE AMOUNT YOU ENTERED IS NOT AVAILABLE IN YOUR ACCOUNT.");
+  }
+
+
+else
+{ printf("\n\n\t\tENTER THE AMOUNT IN MULTIPLE OF 100.");
+    chk++;
+    getch();
+    system("cls");
+    if(chk==3)
+        exit(0);
+    goto label;
+}
+}
+void checkbalance(int k)
+{  getch();
+   system("cls");
+   printf("\t\t\t\t****WELCOME TO THE BANK OF INDIA ATM****");
+   printf("\n\n\n\n\t\tWELCOME %s TO THE BANK OF INDIA ATM.",ob[k].name);
+   printf("\n\n\t\tYOUR ACCOUNT HAS CURRENT BALANCE OF RS %d.",ob[k].amt);
+
+}
+
+
+void depositmoney(int k)
+{  int amountdep,chk=0;
+    getch();
+    system("cls");
+  printf("\n\n\t\t%s ENTER THE AMOUNT YOU WISH TO DEPOSIT",ob[k].name);
+  label1:
+  printf("\n\n\t\tNOTE THAT AMOUNT YOU ENTER SHOULD BE A MULTIPLE OF 100 ONLY!!\n\n\t\tENTER HERE : ");
+  scanf("%d",&amountdep);
+  if(amountdep%100==0){
+    if(amountdep<=ob[k].amt)
+    {
+    printf("\n\n\t\tPLEASE INSERT YOUR CASH AMOUNT OF RS %d IN THE ATM.\n",amountdep);
+    getch();
+    ob[k].amt+=amountdep;
+    totaldep+=amountdep;
+    printf("\n\n\n\t\tTOTAL AVAILABLE BALANCE IN YOUR ACCOUNT NOW IS %d.",ob[k].amt);
+    }
+    else
+    {
+        printf("\n\n\t\tPLEASE ENTER AMOUNT IN MULTIPLES OF 100.\n");
+    }
+
+}
+else
+{
+    chk++;
+    system("cls");
+    if(chk==3)
+        exit(0);
+    goto label1;
+}
+}
+
+void admin()
+{ int adminid=18765, adminpass=2305,adid,adpass,cnt=2,cnt2=2;
+  printf("\n\n\t\tWELCOME TO ADMIN PORTAL.......");
+  printf("\n\n\t\tPLEASE ENTER THE ADMIN USER ID TO LOGIN.\n\n\t\tENTER HERE : ");
+  while(cnt>0)
+  {
+      scanf("%d",&adid);
+      if(adid==adminid)
+     { printf("\n\n\t\tPLEASE ENTER THE PASSWORD\n\n\t\tENTER HERE : ");
+      while(cnt2>0)
+      {
+      scanf("%d",&adpass);
+      cnt=0;
+
+      if(adpass==adminpass)
+     { printf("\n\n\t\tYOU ARE SUCCESSFULLY LOGGED IN TO THE ADMIN PORTAL.");
+      cnt2=0;
+      adminaccess();
+
+     }
+
+     else
+     { printf("\n\n\t\tYOU ENTERED WRONG PASSWORD.PLEASE ENTER CORRECT PASSWORD.");
+       cnt2--;
+
+     }
+
+  }
+     }
+    else
+    { printf("\n\n\t\tYOU ENTERED WRONG USER ID.PLEASE ENTER CORRECT ID.");
+      cnt--;
+    }
+   }
+
+
+}
+void adminaccess()
+{ int choice,ch=1;
+  getch();
+  system("cls");
+  printf("\n\n\t\tPLEASE ENTER THE CHOICE YOU WANT TO GO WITH\n\n\t\t1. CHECK USER LIST\n\n\t\t2. SEARCH USER DETAILS\n\n\t\t3. REGISTER NEW USER\n\n\n\t\tENTER HERE :  ");
+  while(ch==1)
+  {
+  scanf("%d",&choice);
+  getch();
+  system("cls");
+  switch(choice)
+  { case 1: printf("\n\n\t\tTHE LIST OF ALL THE ACCOUNT HOLDERS IS : \n\n\n\t\t\t\t");
+
+            for(int i=0;i<n;i++)
+            { if(ob[i].name[0]>=97&&ob[i].name[0]<=122)
+                ob[i].name[0]-=32;
+             if(ob[i].surname[0]>=97&&ob[i].surname[0]<=122)
+                ob[i].surname[0]-=32;
+
+                printf("%d. %s %s\n\n\t\t\t\t",i+1,ob[i].name,ob[i].surname);
+            }
+            break;
+
+    case 2: usersearch();
+            break;
+    case 3: adminnewregister();
+            break;
+    default: printf("\n\n\t\tPLEASE ENTER A VALID CHOICE.");
+
+
+  }
+  printf("\n\n\t\tDO YOU WANT TO RE-VISIT ADMIN PORTAL\n\n\t\t1. YES\n\n\t\t2. NO\n\n\t\tENTER HERE : ");
+  scanf("%d",&ch);
+
+}
+}
+void usersearch()
+{ int accsearch,ch=1,flag=0;
+
+  printf("\n\n\t\tENTER THE ACCOUNT NUMBER TO SEARCH THE USER DETAILS.\n\n\t\tENTER HERE : ");
+  while(ch==1)
+  {
+  scanf("%d",&accsearch);
+  for(int i=0;i<n;i++)
+  {if(ob[i].accno==accsearch)
+   {printf("\n\n\n\t\tTHE ACCOUNT HAS BEEN FOUND. FOLLOWING ARE THE DETAILS : \n\n\n\n\t\t");
+    printf("Account no             NAME                       Pin              Amount\n\n\t\t%d                 %s %s               %d              %d\n\t\t",ob[i].accno,ob[i].name,ob[i].surname,ob[i].pin,ob[i].amt);
+   }
+    flag++;
+  }
+  if(flag==0)
+  { printf("\n\n\t\tNO SUCH USER FOUND PLEASE TRY AGAIN\n\n");
+
+  }
+  getch();
+  system("cls");
+  printf("\n\n\t\tDO YOU WANT TO SEARCH MORE\n\n\t\t1. YES\n\n\t\t2. NO\n\n\t\tENTER HERE : ");
+  scanf("%d",&ch);
+  }
+
+}
+void adminnewregister()
+{ int ch=1;
+  while(ch==1)
+  { fflush(stdin);
+  printf("\n\n\t\tENTER THE USER ID OF NEW USER.\n\n\t\tENTER HERE : ");
+  scanf("%d",&ob[n].accno);
+   fflush(stdin);
+  printf("\n\n\t\tENTER THE PIN OF USER\n\n\t\tENTER HERE : ");
+  scanf("%d",&ob[n].pin);
+  fflush(stdin);
+  printf("\n\n\t\tENTER THE NAME OF THE USER.\n\n\t\tENTER HERE : ");
+  gets(ob[n].name);
+  fflush(stdin);
+  printf("\n\n\t\tENTER THE SURNAME OF THE USER.\n\n\t\tENTER HERE : ");
+  gets(ob[n].surname);
+  printf("\n\n\t\tENTER THE AMOUNT AVAILABLE IN USER'S ACCOUNT\n\n\t\tENTER HERE : ");
+  scanf("%d",&ob[n].amt);
+  n++;
+  printf("\n\n\t\tDO YOU WANT TO REGISTER MORE\n\n\t\t1. YES\n\n\t\t2. NO\n\n\n\t\tENTER HERE : ");
+  scanf("%d",&ch);
+  }
+}
+void pinchange(int k)
+{ int p,pass,chance=3,wpin=0,wpin2=0;
+  getch();
+  system("cls");
+  printf("\t\t\t\t\t**PIN CHANGE**");
+  printf("\n\n\n\n\t\tENTER THE PIN\n\n\t\t**NOTE THAT PIN SHOULD HAVE ONLY FOUR DIGITS**\n\n\t\tENTER HERE : ");
+
+  scanf("%d",&pass);
+ while(chance>0)
+ {
+  if(pass==ob[k].pin)
+  {
+
+    printf("\n\n\n\t\tENTER CURRENT PIN : ");
+    scanf("%d",&p);
+    if(p==ob[k].pin)
+    {   printf("\n\n\t\tDONT ENTER THE SAME PIN\n\n");
+        chance--;
+    }
+    else{
+        if(p>=1000&&p<=9999)
+        {
+            printf("\n\n\t\tYOUR PIN IS CHANGED SUCCESSFULLY.");
+            ob[k].pin=p;
+            chance=0;
+            break;
+        }
+        else
+        {
+            printf("\n\n\t\tENTER THE PIN IN FOUR DIGITS\n\n");
+            chance--;
+
+        }
+
+
+    }
+  }
+  else{
+    printf("\n\n\t\tENTER THE CORRECT PIN PLEASE");
+    chance--;
+  }
+
+ }
+
+  }
+void recipt(int temp)
+{ getch();
+  system("cls");
+  printf("\n\n\t\t-----------------------------------------------------------");
+  printf("\n\n\t\t\t\t||BANK OF INDIA||");
+  printf("\n\n\t\t\t\t **ATM RECEIPT**");
+  printf("\n\n\t\tACCOUNT NUMBER     :              %d",ob[temp].accno);
+  printf("\n\n\t\tUSER NAME          :              %s %s",ob[temp].name,ob[temp].surname);
+  printf("\n\n\t\tWITHDRAWN MONEY    :              %d",totalwith);
+  printf("\n\n\t\tDEPOSITED MONEY    :              %d",totaldep);
+  printf("\n\n\t\tAVAILABLE BALANCE  :              %d",ob[temp].amt);
+  printf("\n\n\t\t\t    !!THANK YOU FOR VISIITNG.\n\n\t\t\t    HAVE A GOOD DAY!!");
+  printf("\n\n\t\t-----------------------------------------------------------");
+}
+void userlogin()
+{   int count=0,T=3,wrongcnt1=0,userch,k,revisit=1;
+    printf("\t\t\t\t\t\t**USER PORTAL** \n\n");
+
+	printf("\n\n\t\tENTER YOUR ACCOUNT NUMBER.\n\n\t\tENTER HERE : ");
+    while(T>0)
+    {
+    scanf("%d",&acntno);
+
+    for(int i=0;i<5;i++)
+    { if(ob[i].accno==acntno)
+      { k=i;
+        count=1;
+		T=0;
+        break;
+	  }
+}
+temp=k;
+  if(count==0)
+{   getch();
+    system("cls");
+    printf("\n\n\t\tYOU ENTERED THE WRONG USER ID. PLEASE ENTER THE CORRECT ID\n\n\t\tENTER HERE : ");
+    T--;
+  wrongcnt1++;
+
+}
+}
+if(wrongcnt1==3)
+  {   getch();
+      system("cls");
+       printf("\n\n\t\tYOU ENTERED WRONG ACCOUNT NUMBER FOR THREE TIMES.\nHENCE YOU ARE NOT ABLE TO ACCESS YOUR ACCOUNT NOW FOR THIS DAY. PLEASE TRY AGAIN TOMORROW OR CONTACT YOUR BANK\n\n");
+    printf("\t\t\t\t\tTHANK YOU!! HAVE A NICE DAY!!\n\n");
+    exit(0);
+  }
+   int t=3,wrongcnt2=0;
+
+  printf("\n\n\t\tENTER YOUR PIN\n\n\t\t**NOTE THAT PIN SHOULD HAVE ONLY FOUR DIGITS**\n\n\t\tENTER HERE : ");
+  while(t>0)
+  {
+  scanf("%d",&pass);
+  if(pass==ob[k].pin)
+  {
+    getch();
+    system("cls");
+  while(revisit==1)
+  {
+       getch();
+       system("cls");
+   printf("\t\t\t\t\t****WELCOME TO THE BANK OF INDIA ATM****");
+   printf("\n\n\n\n\t\tENTER YOUR CHOICE AS GIVEN BELOW");
+   printf("\n\n\n\t\t\t\t\t\t1. WITHDRAW MONEY\n\n\t\t\t\t\t\t2. DEPOSIT MONEY\n\n\t\t\t\t\t\t3. CHECK AVAILABLE BALANCE\n\n\t\t\t\t\t\t4. PIN CHANGE\n\n\t\t\t\t\t\t5. TRANSFER MONEY\n\n\t\tENTER HERE : ");
+   scanf("%d",&userch);
+   switch(userch)
+   { case 1: withdrawmoney(k);
+             break;
+    case 2:  depositmoney(k);
+             break;
+    case 3:  checkbalance(k);
+             break;
+    case 4:  pinchange(k);
+             break;
+    case 5:  tamount(k);
+              break;
+    default: printf("\n\n\t\tENTER A VALID CHOICE\n");
+   }
+
+    t=0;
+    printf("\n\n\t\tDO YOU WANT TO RE-VISIT THE USER PAGE\n\n\t\t1. YES\n\n\t\t2. NO\n\n\t\tENTER HERE : ");
+    scanf("%d",&revisit);
+  }
+
+
+  }
+  else
+  {
+    system("cls");
+    printf("\n\n\t\tYOU ENETERED WRONG PIN. PLEASE MAKE SURE YOU ENTER THE CORRECT PIN OTHERWISE YOU WILL NOT BE ABLE TO ACCESS YOUR ACCOUNT.\n\n\t\tENTER HERE : ");
+    t--;
+    wrongcnt2++;
+
+  }
+}
+if(wrongcnt2==3)
+{
+  system("cls");
+  printf("\n\n\t\tYOU ENETERED WRONG PIN FOR THREE TIMES.");
+  printf("\n\n\t\tPLEASE TRY ONCE AGAIN TOMORROW OR CONTACT YOUR BANK.\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tTHANK YOU. HAVE A GOOD DAY\n ");
+  exit(0);
+}
+
+
+
+}
+void tamount(int k)
+{    getch();
+     system("cls");
+    int mnum,s,wrongcnt=0,t=3,count=0,tamt;
+    printf("\t\t\t\t\t*TRANSFER MONEY**");
+    printf("\n\n\t\tENTER YOUR ACCOUNT NUMBER : ");
+    while(t>0)
+    {
+    scanf("%d",&mnum);
+    for(int i=0;i<n;i++)
+    {
+        if(i!=k){
+        if(mnum==ob[i].accno)
+        {
+            count=1;
+           s=i;
+           t=0;
+           break;
+        }
+        }
+    }
+
+   if(count==0)
+{    getch();
+    system("cls");
+    printf("\n\n\t\tYOU ENTERED THE WRONG USER ID. PLEASE ENTER THE CORRECT ID.\n\n\t\tENTER HERE : ");
+    t--;
+  wrongcnt++;
+
+}
+}
+if(wrongcnt==3)
+{ printf("\n\n\t\tYOU ENETERED WRONG USER ID FOR THREE TIMES.");
+  printf("\n\n\t\tPLEASE TRY ONCE AGAIN TOMORROW OR CONTACT YOUR BANK.\n\n\t\t\tTHANK YOU. HAVE A GOOD DAY\n ");
+  exit(0);
+}
+    int t1=3,wrongcnt1=0,count1=0;
+while(t1>0){
+printf("\n\n\t\tENTER THE AMOUNT : ");
+scanf("%d",&tamt);
+if(tamt<=ob[k].amt)
+{
+    printf("\n\n\t\tAMOUNT IS TRANSFERRED SUCCESSFULLY.");
+    ob[k].amt-=tamt;
+    printf("\n\n\t\tTHE AVAILABLE BALANCE IS %d.",ob[k].amt);
+    ob[s].amt+=tamt;
+    count1=1;
+    t1=0;
+}
+ if(count1==0)
+{   getch();
+    system("cls");
+    printf("\n\n\t\tAMOUNT YOU ENTERED IS NOT AVAIALABLE IN YOUR ACCOUNT.");
+     t1--;
+  wrongcnt++;
+
+}}
+if(wrongcnt1==3)
+{   getch();
+    system("cls");
+     printf("\n\n\t\tYOU ENETERED WRONG PIN FOR THREE TIMES.");
+  printf("\n\n\t\tPLEASE TRY ONCE AGAIN TOMORROW OR CONTACT YOUR BANK.\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tTHANK YOU. HAVE A GOOD DAY\n ");
+  exit(0);
+}
+}
+
+
