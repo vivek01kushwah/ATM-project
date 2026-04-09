@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank of India ATM - Digital Banking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="atm-container">
+        <!-- Header -->
+        <header class="atm-header">
+            <div class="header-content">
+                <h1>🏦 BANK OF INDIA ATM</h1>
+                <div class="datetime">
+                    <span id="currentTime"></span>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Screen -->
+        <main class="atm-screen">
+            
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="screen active">
+                <div class="welcome-content">
+                    <h2>Welcome to Bank of India ATM</h2>
+                    <p class="subtitle">Secure Banking at Your Fingertips</p>
+                    <div class="button-group">
+                        <button class="btn btn-admin" onclick="goToAdminLogin()">
+                            <span class="icon">🔐</span>
+                            <span>ADMIN LOGIN</span>
+                        </button>
+                        <button class="btn btn-user" onclick="goToUserLogin()">
+                            <span class="icon">👤</span>
+                            <span>USER LOGIN</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Login Screen -->
+            <div id="userLoginScreen" class="screen">
+                <div class="login-container">
+                    <h2>User Login</h2>
+                    <form onsubmit="handleUserLogin(event)">
+                        <div class="form-group">
+                            <label for="userAccNo">Account Number:</label>
+                            <input type="number" id="userAccNo" placeholder="Enter your account number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userPin">PIN:</label>
+                            <input type="password" id="userPin" placeholder="Enter your PIN" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-submit">LOGIN</button>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onClick="goToWelcome()">Back</button>
+                    </form>
+                    <div id="userLoginError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- Admin Login Screen -->
+            <div id="adminLoginScreen" class="screen">
+                <div class="login-container">
+                    <h2>Admin Login</h2>
+                    <form onsubmit="handleAdminLogin(event)">
+                        <div class="form-group">
+                            <label for="adminUser">Username:</label>
+                            <input type="text" id="adminUser" placeholder="Enter admin username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPass">Password:</label>
+                            <input type="password" id="adminPass" placeholder="Enter admin password" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-submit">LOGIN</button>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onClick="goToWelcome()">Back</button>
+                    </form>
+                    <div id="adminLoginError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- User Dashboard -->
+            <div id="userDashboard" class="screen">
+                <div class="dashboard-header">
+                    <h2>User Dashboard</h2>
+                    <button class="btn btn-logout" onclick="logout()">Logout</button>
+                </div>
+                <div class="user-info">
+                    <h3>Welcome, <span id="userName"></span>!</h3>
+                    <p>Account: <strong id="userAccount"></strong></p>
+                </div>
+                <div class="button-grid">
+                    <button class="btn btn-service" onclick="goToCheckBalance()">
+                        <span class="icon">💰</span>
+                        <span>Check Balance</span>
+                    </button>
+                    <button class="btn btn-service" onclick="goToWithdraw()">
+                        <span class="icon">💸</span>
+                        <span>Withdraw Money</span>
+                    </button>
+                    <button class="btn btn-service" onclick="goToDeposit()">
+                        <span class="icon">🏦</span>
+                        <span>Deposit Money</span>
+                    </button>
+                    <button class="btn btn-service" onclick="goToTransfer()">
+                        <span class="icon">↔️</span>
+                        <span>Transfer Money</span>
+                    </button>
+                    <button class="btn btn-service" onclick="goToChangePin()">
+                        <span class="icon">🔑</span>
+                        <span>Change PIN</span>
+                    </button>
+                    <button class="btn btn-service" onclick="logout()">
+                        <span class="icon">🚪</span>
+                        <span>Exit</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Check Balance -->
+            <div id="checkBalanceScreen" class="screen">
+                <div class="transaction-container">
+                    <h2>Account Balance</h2>
+                    <div class="balance-display" id="balanceDisplay">
+                        <h3>Current Balance</h3>
+                        <p class="amount" id="balanceAmount">₹ --</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="goToUserDashboard()">Back to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- Withdraw Money -->
+            <div id="withdrawScreen" class="screen">
+                <div class="transaction-container">
+                    <h2>Withdraw Money</h2>
+                    <form onsubmit="handleWithdraw(event)">
+                        <div class="form-group">
+                            <label for="withdrawAmount">Amount to Withdraw:</label>
+                            <input type="number" id="withdrawAmount" placeholder="Enter amount" min="100" required>
+                        </div>
+                        <div class="quick-amounts">
+                            <button type="button" class="quick-btn" onclick="setAmount(500)">₹500</button>
+                            <button type="button" class="quick-btn" onclick="setAmount(1000)">₹1000</button>
+                            <button type="button" class="quick-btn" onclick="setAmount(2000)">₹2000</button>
+                            <button type="button" class="quick-btn" onclick="setAmount(5000)">₹5000</button>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Withdraw</button>
+                        <button type="button" class="btn btn-secondary" onclick="goToUserDashboard()">Cancel</button>
+                    </form>
+                    <div id="withdrawError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- Deposit Money -->
+            <div id="depositScreen" class="screen">
+                <div class="transaction-container">
+                    <h2>Deposit Money</h2>
+                    <form onsubmit="handleDeposit(event)">
+                        <div class="form-group">
+                            <label for="depositAmount">Amount to Deposit:</label>
+                            <input type="number" id="depositAmount" placeholder="Enter amount" min="100" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Deposit</button>
+                        <button type="button" class="btn btn-secondary" onclick="goToUserDashboard()">Cancel</button>
+                    </form>
+                    <div id="depositError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- Transfer Money -->
+            <div id="transferScreen" class="screen">
+                <div class="transaction-container">
+                    <h2>Transfer Money</h2>
+                    <form onsubmit="handleTransfer(event)">
+                        <div class="form-group">
+                            <label for="transferAccNo">Recipient Account Number:</label>
+                            <input type="number" id="transferAccNo" placeholder="Enter recipient account" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="transferAmount">Amount:</label>
+                            <input type="number" id="transferAmount" placeholder="Enter amount" min="100" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Transfer</button>
+                        <button type="button" class="btn btn-secondary" onclick="goToUserDashboard()">Cancel</button>
+                    </form>
+                    <div id="transferError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- Change PIN -->
+            <div id="changePinScreen" class="screen">
+                <div class="transaction-container">
+                    <h2>Change PIN</h2>
+                    <form onsubmit="handleChangePin(event)">
+                        <div class="form-group">
+                            <label for="oldPin">Current PIN:</label>
+                            <input type="password" id="oldPin" placeholder="Enter current PIN" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPin">New PIN:</label>
+                            <input type="password" id="newPin" placeholder="Enter new PIN" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPin">Confirm PIN:</label>
+                            <input type="password" id="confirmPin" placeholder="Confirm new PIN" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Change PIN</button>
+                        <button type="button" class="btn btn-secondary" onclick="goToUserDashboard()">Cancel</button>
+                    </form>
+                    <div id="changePinError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="adminDashboard" class="screen">
+                <div class="dashboard-header">
+                    <h2>Admin Dashboard</h2>
+                    <button class="btn btn-logout" onclick="logout()">Logout</button>
+                </div>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h4>Total ATM Cash</h4>
+                        <p id="totalAtmCash">₹ --</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Withdrawals</h4>
+                        <p id="totalWithdrawals">₹ --</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Deposits</h4>
+                        <p id="totalDeposits">₹ --</p>
+                    </div>
+                </div>
+                <div class="button-grid">
+                    <button class="btn btn-service" onclick="goToUserList()">
+                        <span class="icon">📋</span>
+                        <span>View All Users</span>
+                    </button>
+                    <button class="btn btn-service" onclick="goToSearchUser()">
+                        <span class="icon">🔍</span>
+                        <span>Search User</span>
+                    </button>
+                    <button class="btn btn-service" onclick="goToNewRegister()">
+                        <span class="icon">➕</span>
+                        <span>Register New User</span>
+                    </button>
+                    <button class="btn btn-service" onclick="logout()">
+                        <span class="icon">🚪</span>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- User List (Admin) -->
+            <div id="userListScreen" class="screen">
+                <div class="admin-container">
+                    <h2>All Users</h2>
+                    <div id="userListTable" class="user-table"></div>
+                    <button class="btn btn-secondary" onclick="goToAdminDashboard()">Back to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- Search User (Admin) -->
+            <div id="searchUserScreen" class="screen">
+                <div class="admin-container">
+                    <h2>Search User</h2>
+                    <form onsubmit="handleSearchUser(event)">
+                        <div class="form-group">
+                            <label for="searchAccNo">Account Number:</label>
+                            <input type="number" id="searchAccNo" placeholder="Enter account number" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Search</button>
+                    </form>
+                    <div id="searchResult" class="user-table"></div>
+                    <button class="btn btn-secondary" onclick="goToAdminDashboard()">Back to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- New User Registration (Admin) -->
+            <div id="newRegisterScreen" class="screen">
+                <div class="admin-container">
+                    <h2>Register New User</h2>
+                    <form onsubmit="handleNewRegister(event)">
+                        <div class="form-group">
+                            <label for="regFirstName">First Name:</label>
+                            <input type="text" id="regFirstName" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regLastName">Last Name:</label>
+                            <input type="text" id="regLastName" placeholder="Enter last name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPin">PIN:</label>
+                            <input type="password" id="regPin" placeholder="Enter 4-digit PIN" maxlength="4" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regAmount">Initial Amount:</label>
+                            <input type="number" id="regAmount" placeholder="Enter initial amount" min="0" required>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Register User</button>
+                        <button type="button" class="btn btn-secondary" onclick="goToAdminDashboard()">Cancel</button>
+                    </form>
+                    <div id="registerError" class="error-msg"></div>
+                </div>
+            </div>
+
+            <!-- Success/Error Modal -->
+            <div id="messageModal" class="modal">
+                <div class="modal-content">
+                    <p id="messageText"></p>
+                    <button class="btn btn-submit" onclick="closeModal()">OK</button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="atm-footer">
+            <p>© 2024 Bank of India. All rights reserved. | Secure Banking Solutions</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
